@@ -83,33 +83,25 @@ int main()
     std::cout<<"Enter direct trips: "<<std::endl;
     std::string direct;
     std::cin>>direct;
-    // std::string temp;
     int t = 0;
     SkipList<std::string>* saved = list;
     SkipList<std::string>* temp = list;
-    while (direct != "end"){
-        // cout<<direct<<"-";
-        if(t == 1){
-            cout<<">";
-            for(int i = 0; i < numberOfCities-1; i++){
-                if (direct == list->next->city){
-                    list->skip = temp;
-                    t = 0;
-                    cout<<"+";
-                }
-                // list = list->next;
+    while(direct != "end"){
+        for(int i = 0; i < numberOfCities-1; i++){
+            if(t == 0 && direct == list->city){
+                temp = list;
+                t = 1;
+                std::cin>>direct;
             }
-        }else{
-            // temp = direct;
-            for(int i = 0; i < numberOfCities-1; i++){
-                if (direct == list->next->city){
-                    temp = list->next;
-                }
+            if(t == 1 && direct == list->next->city){
+                temp->skip = list->next;
+                t = 0;
+                std::cin >> direct;
+                list = saved;
+            }else{
+                list = list->next;
             }
-            t = 1;
         }
-        
-        std::cin>>direct;
     }
     
     printSkipList(saved);
