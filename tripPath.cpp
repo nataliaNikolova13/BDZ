@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include <cstring>  
-// #include <stringstream>
 
 using namespace std;
 
@@ -16,7 +15,6 @@ struct SkipList{
         : city(city), next(n), skip(s){}
 };
 
-// template <typename T>
 void deleteList(SkipList<std::string>* list){
     while(list){
         SkipList<std::string>* temp = list;
@@ -25,7 +23,6 @@ void deleteList(SkipList<std::string>* list){
     }
 }
 
-// template <typename T>
 void printList (SkipList<std::string>* list){
     while(list){
         std::cout<<list->city<<" ";
@@ -34,10 +31,8 @@ void printList (SkipList<std::string>* list){
     std::cout<<std::endl;
 }
 
-// template <typename T>
 SkipList<std::string>* toList(std::vector<std::string> vectorCities, int numberOfCities){
     if (vectorCities.empty() || numberOfCities == 0){
-        // cout<<"*";
         return nullptr;
     }
     SkipList<std::string>* first = new SkipList<std::string>(vectorCities[0]);
@@ -45,9 +40,7 @@ SkipList<std::string>* toList(std::vector<std::string> vectorCities, int numberO
     for(size_t i = 1; i < numberOfCities; i++){
         current->next = new SkipList<std::string>(vectorCities[i]);
         current = current->next;
-        // cout<<"-";
     }
-    // cout<<"+";
     return first;
 }
 
@@ -101,8 +94,6 @@ std::vector<std::string> findShortestPath(std::vector<std::string> wantToVisitVe
             }
         }
     }
-
-    
     return shorterPath;
 }
 
@@ -111,15 +102,16 @@ int main()
     std::cout<<"Enter the number of cities: ";
     int numberOfCities;
     std::cin>>numberOfCities;
+    if(numberOfCities == 0){
+        return 0;
+    }
     std::string cities;
     std::cout<<"Enter all cities: ";
 
     std::vector<std::string> vectorCities;
     for (int i = 0; i < numberOfCities; i++){
         std::cin>>cities;
-        
         vectorCities.push_back(cities);
-        // std::cout<<vectorCities[i]<<std::endl;
     }
     SkipList<std::string>* list = toList(vectorCities, numberOfCities);
     printList(list);
@@ -149,8 +141,6 @@ int main()
         }
     }
     
-    // printSkipList(saved);
-    
     std::cout<<"Enter what cities you want to visit: "<<std::endl;
     std::cout<<"(write end to stop entering direct lines)"<<std::endl;
     std::string cityToVisit;
@@ -163,21 +153,8 @@ int main()
     }
     list = saved;
     findShortestPath(wantToVisitVector, list);
-    // std::cout<<list->city<<" - ";
     
-    // for(int i = 0; i < wantToVisitVector.size(); i++){
-    //     // std::cout<<i;
-    //     if (wantToVisitVector[i] == list->skip->city){
-    //         list = list->skip;
-    //         std::cout<<list->city<<" - ";
-    //     }else{
-    //         list = list->next;
-    //         std::cout<<list->city<<" - ";
-    //     }
-    // }
-    // std::cout<<list->city;
     deleteList(saved);
-    // strToArr(cities, vectorCities);
-    // splitstr(cities, "&&");
+   
     return 0;
 }
