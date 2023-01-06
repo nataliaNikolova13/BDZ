@@ -69,7 +69,7 @@ int main()
     std::cin>>numberOfCities;
     std::string cities;
     std::cout<<"Enter all cities: ";
-    // 
+
     std::vector<std::string> vectorCities;
     for (int i = 0; i < numberOfCities; i++){
         std::cin>>cities;
@@ -81,6 +81,7 @@ int main()
     printList(list);
     
     std::cout<<"Enter direct trips: "<<std::endl;
+    std::cout<<"(write end to stop entering direct lines)"<<std::endl;
     std::string direct;
     std::cin>>direct;
     int t = 0;
@@ -104,7 +105,32 @@ int main()
         }
     }
     
-    printSkipList(saved);
+    // printSkipList(saved);
+    
+    std::cout<<"Enter what cities you want to visit: "<<std::endl;
+    std::cout<<"(write end to stop entering direct lines)"<<std::endl;
+    std::string cityToVisit;
+    std::vector<std::string> wantToVisitVector;
+    std::cin>>cityToVisit;
+    
+    while(cityToVisit != "end"){
+        wantToVisitVector.push_back(cityToVisit);
+        std::cin>>cityToVisit;
+    }
+    list = saved;
+    std::cout<<list->city<<" - ";
+    
+    for(int i = 0; i < wantToVisitVector.size(); i++){
+        // std::cout<<i;
+        if (wantToVisitVector[i] == list->skip->city){
+            list = list->skip;
+            std::cout<<list->city<<" - ";
+        }else{
+            list = list->next;
+            std::cout<<list->city<<" - ";
+        }
+    }
+    std::cout<<list->city;
     deleteList(saved);
     // strToArr(cities, vectorCities);
     // splitstr(cities, "&&");
