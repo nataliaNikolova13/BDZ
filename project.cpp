@@ -62,6 +62,50 @@ void printSkipList(SkipList<std::string>* list){
     cout<<endl;
 }
 
+std::vector<std::string> findShortestPath(std::vector<std::string> wantToVisitVector, SkipList<std::string>* list){
+    std::vector<std::string> shorterPath;
+    SkipList<std::string>* saved = list;
+    int i = 0;
+    if(list == nullptr){
+        return {};
+    }
+    std::cout<<list->city<<" ";
+    shorterPath.push_back(list->city);
+    list = list->next;
+
+    while(list != nullptr){
+        if(list->city == wantToVisitVector[i]){
+            std::cout<<list->city<<" ";
+            shorterPath.push_back(wantToVisitVector[i]);
+            i++;
+        }
+        if(list->skip == nullptr){
+            if(list->city != wantToVisitVector[i]){
+                std::cout<<list->city<<" ";
+                wantToVisitVector.push_back(list->city);
+            }
+        list = list->next;
+        }else if(list->skip != nullptr){
+            SkipList<std::string>* temp = list;
+            bool cityIsInTheSkip = false;
+            while(list->next != temp->skip){
+                if(wantToVisitVector[1] == list->city){
+                    cityIsInTheSkip = true;
+                }
+                list = list->next;
+            }
+            if(cityIsInTheSkip == true){
+                list = temp->next;
+            }else{
+                list = temp->skip;
+            }
+        }
+    }
+
+    
+    return shorterPath;
+}
+
 int main()
 {
     std::cout<<"Enter the number of cities: ";
@@ -118,19 +162,20 @@ int main()
         std::cin>>cityToVisit;
     }
     list = saved;
-    std::cout<<list->city<<" - ";
+    findShortestPath(wantToVisitVector, list);
+    // std::cout<<list->city<<" - ";
     
-    for(int i = 0; i < wantToVisitVector.size(); i++){
-        // std::cout<<i;
-        if (wantToVisitVector[i] == list->skip->city){
-            list = list->skip;
-            std::cout<<list->city<<" - ";
-        }else{
-            list = list->next;
-            std::cout<<list->city<<" - ";
-        }
-    }
-    std::cout<<list->city;
+    // for(int i = 0; i < wantToVisitVector.size(); i++){
+    //     // std::cout<<i;
+    //     if (wantToVisitVector[i] == list->skip->city){
+    //         list = list->skip;
+    //         std::cout<<list->city<<" - ";
+    //     }else{
+    //         list = list->next;
+    //         std::cout<<list->city<<" - ";
+    //     }
+    // }
+    // std::cout<<list->city;
     deleteList(saved);
     // strToArr(cities, vectorCities);
     // splitstr(cities, "&&");
