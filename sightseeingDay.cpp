@@ -4,15 +4,6 @@
 
 using namespace std;
 
-// struct Edge{
-//     int weight;
-//     std::string name;
-//     std::vector<Edge*> connections;
-
-//     Edge(int weight, std::string name, std::vector<Edge*> connections)
-//         : weight(weight), name(name), connections(connections){}
-// };
-
 struct Graph{
     std::vector<std::string> names;
     std::vector<std::vector<int>> matrix;
@@ -71,6 +62,30 @@ void addVertex(Graph* graph, std::string first, std::string second, int weight){
     // std::cout<<"=";
 }
 
+void findPath(Graph* graph, int timePeriod, int min, int posX, int posY){
+    if(!graph){
+        return;
+    }
+    std::cout<<graph->names[posX]<<" ";
+    
+    
+    for(int i = 0; i < graph->names.size(); i++){
+        if(graph->matrix[posX][i] != 0 && i != posY){
+            posY = i;
+            min = min + graph->matrix[posX][posY];
+            break;
+        }
+    }
+    int temp = posX;
+    posX = posY;
+    posY = temp;
+    if(min >= timePeriod){
+        return;
+    }
+    findPath(graph, timePeriod, min, posX, posY);
+    
+}
+
 int main(){
     std::ifstream file("plovdiv.txt"); 
     if (!file.is_open()) 
@@ -88,11 +103,11 @@ int main(){
     char tempWord[100];
 
     int min;
-    file.seekg(-1,ios_base::end);
-    file>>tempWord;
-    min = stoi(tempWord);
+    // file.seekg(-1,ios_base::end);
+    // file>>tempWord;
+    // min = stoi(tempWord);
 
-    file.seekg(0, ios_base::beg);
+    // file.seekg(0, ios_base::beg);
 
     while (!file.eof()) 
     {
@@ -119,6 +134,8 @@ int main(){
                     graph->names.push_back(tempFirst);
                 }
                 pos++;
+                }else{
+                    min = stoi(tempWord);
                 }
              }else if(pos%3 == 1){
                 tempSecond = tempWord;
@@ -142,7 +159,7 @@ int main(){
 
     file.close();   
     printMatrix(graph);
+    findPath(graph, min, 0, 0, 0);
     delete graph;
-    // std::cout<<int('1');
     return 0;
 }
